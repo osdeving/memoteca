@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Botão Animado com Canvas</title>
+  <style>
+    #buttonCanvas {
+      display: block;
+      margin: 100px auto;
+      border: 2px solid black;
+    }
+  </style>
+</head>
+<body>
+  <!-- Canvas que servirá como um botão animado -->
+  <canvas id="buttonCanvas" width="200" height="100"></canvas>
+
+  <script>
+    const canvas = document.getElementById('buttonCanvas');
+    const ctx = canvas.getContext('2d');
+    let isHovered = false;
+    let animationRadius = 20;
+    let isExpanding = true;
+
+    // Função para desenhar o botão com uma animação simples
+    function drawButton() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas
+
+      // Desenha o botão como um círculo no centro do canvas
+      ctx.beginPath();
+      ctx.arc(canvas.width / 2, canvas.height / 2, animationRadius, 0, Math.PI * 2);
+      ctx.fillStyle = isHovered ? '#ff5733' : '#0095DD'; // Cor muda ao passar o mouse
+      ctx.fill();
+      ctx.closePath();
+
+      // Animação do círculo crescendo e diminuindo
+      if (isExpanding) {
+        animationRadius += 0.5;
+        if (animationRadius >= 40) {
+          isExpanding = false;
+        }
+      } else {
+        animationRadius -= 0.5;
+        if (animationRadius <= 20) {
+          isExpanding = true;
+        }
+      }
+
+      // Chama a função novamente para o próximo frame
+      requestAnimationFrame(drawButton);
+    }
+
+    // Detecção de hover no botão
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      // Verifica se o mouse está sobre o círculo
+      const distance = Math.sqrt(Math.pow(x - canvas.width / 2, 2) + Math.pow(y - canvas.height / 2, 2));
+      isHovered = distance < animationRadius;
+    });
+
+    // Ação de clique no botão
+    canvas.addEventListener('click', () => {
+      if (isHovered) {
+        alert('Botão clicado!');
+      }
+    });
+
+    // Inicia a animação
+    drawButton();
+  </script>
+</body>
+</html>
