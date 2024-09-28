@@ -1,7 +1,7 @@
 const URL_BASE = 'http://localhost:3000';
 
 const api = {
-    async buscarPensamento() {
+    async buscarPensamentos() {
         try {
             const response = await fetch(`${URL_BASE}/pensamentos`)
             return await response.json();
@@ -21,6 +21,23 @@ const api = {
                 body: JSON.stringify(pensamento)
             })
             return await response.json();
+        } catch (error) {
+            console.error(error);
+            alert('Erro ao salvar pensamento: ' + pensamento);
+        }
+    },
+
+    async buscarPensamentoPorTermo(termo) {
+        try {
+            const pensamentos = await this.buscarPensamentos();
+            const termoEmMinusculas = termo.toLowerCase();
+
+            const pensamentosFiltrados = pensamentos.filter(pensamento => {
+                return pensamento.conteudo.toLowerCase().includes(termoEmMinusculas) ||
+                pensamento.autoria.toLowerCase().includes(termoEmMinusculas)
+            })
+
+            return pensamentosFiltrados
         } catch (error) {
             console.error(error);
             alert('Erro ao salvar pensamento: ' + pensamento);

@@ -1,20 +1,38 @@
 import api from './api.js';
 
 const ui = {
-    async renderizarPensamentos() {
-         const listaPensamentos = document.getElementById("lista-pensamentos")
+    async preencherFormulario(pensamentoId) {
+        const pensamento = await api.buscarPensamentoPorId(pensamentoId)
+        document.getElementById('pensamento-id').value = pensamento.id;
+        document.getElementById('pensamento-conteudo').value = pensamento.conteudo;
+        document.getElementById('pensamento-autoria').value = pensamento.autoria
+    
+        document.getElementById('pensamento-form').scrollIntoView({
+            behavior: 'smooth'
+        });
+    },
+
+    limparFormulario() {
+        document.getElementById("pensamento-form").reset();
+    },
+
+    async renderizarPensamentos(pensamentosFiltrados = null) {
+
+        const listaPensamentos = document.getElementById("lista-pensamentos")
         const mensagemVazia = document.getElementById("mensagem-vazia")
         listaPensamentos.innerHTML = ""
-      
+        
         try {
-            const pensamentos = await api.buscarPensamento()
+
+            let pensamentosParaRenderizar = pensamentosFiltrados || await api.buscarPensamentos()
+
             
-          if (pensamentos.length <= 0) { 
-            mensagemVazia.style.display = "block"
-          } else {
-            mensagemVazia.style.display = "none"
-            pensamentos.forEach(ui.adicionarPensamentoNaLista)
-          } 
+            if (pensamentosParaRenderizar.length <= 0) { 
+                mensagemVazia.style.display = "block"
+            } else {
+                mensagemVazia.style.display = "none"
+                pensamentosParaRenderizar.forEach(ui.adicionarPensamentoNaLista)
+            } 
         }
         catch {
           alert('Erro ao renderizar pensamentos')
@@ -51,7 +69,7 @@ const ui = {
 
         const botaoExcluir = document.createElement('button');
         botaoExcluir.classList.add('botao-excluir');
-        botaoExcluir.onclick = () => ui.excluirPensamento(pensamento.id);
+        botaoExcluir.onclick = async () => ui.excluirPensamento(pensamento.id);
 
         const iconeExcluir = document.createElement('img');
         iconeExcluir.src = 'assets/imagens/icone-excluir.png';
@@ -70,54 +88,17 @@ const ui = {
         li.append(icones);
 
         listaPensamentos.append(li);
-    }
+    },
 
-    ,
-
-    async inserirPensamento() {
-        const pensamentId = document.getElementById('pensamento-id').value;
-        const conteudo = document.getElementById('pensamento-conteudo').value;
-        const autoria = document.getElementById('pensamento-autoria').value;
-
-        const pensamento = {
-            conteudo,
-            autoria
-        }
-
+    async excluirPensamento(id) {
         try {
-            pensamentId ? await api.atualizarPensamento({id: pensamentId, ...pensamento}): await api.salvarPensamento(pensamento)
+            await api.excluirPensamentoPorId(id)
+            ui.renderizarPensamentos()
         } catch (error) {
             console.error(error);
-            alert('Erro ao salvar pensamento');
+            alert('Erro ao excluir pensamento: ' + id)
         }
     },
-
-    limparFormulario() {
-        document.getElementById("pensamento-form").reset();
-    },
-
-    excluirPensamento(id) {
-        try {
-            api.excluirPensamentoPorId(id);
-            this.renderizarPensamentos();
-        } catch (error) {
-            console.error(error);
-            alert('Erro ao excluir pensamento: ' + id);
-        }
-    },
-
-    async preencherFormulario(pensamentoId) {
-        const pensamento = await api.buscarPensamentoPorId(pensamentoId)
-        document.getElementById('pensamento-id').value = pensamento.id;
-        document.getElementById('pensamento-conteudo').value = pensamento.conteudo;
-        document.getElementById('pensamento-autoria').value = pensamento.autoria
-
-        document.getElementById('pensamento-form').scrollIntoView({
-            behavior: 'smooth'
-        });
-    }
-
-
 }
 
 export default ui;
