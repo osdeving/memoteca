@@ -2,73 +2,119 @@
   "pensamentos": [
     {
       "id": "2a56",
+      "favorito": false,
       "conteudo": "Vc faz TI? Conserta meu celular!",
-      "autoria": "Grupo da família"
+      "autoria": "Grupo da família",
+      "data": "2023-09-28T14:45:12.345Z"
     },
     {
       "id": "4c7d",
+      "favorito": false,
       "conteudo": "Da vida reclama, mas sem ela não vive!",
-      "autoria": "Mestre Yoda"
+      "autoria": "Mestre Yoda",
+      "data": "2023-09-29T11:22:33.456Z"
     },
     {
       "id": "5b8a",
+      "favorito": false,
       "conteudo": "Na minha máquina funciona!",
-      "autoria": "Dev"
+      "autoria": "Dev",
+      "data": "2023-09-30T09:15:44.567Z"
     },
     {
       "id": "68uy",
+      "favorito": true,
       "conteudo": "Esse é de laranja que parece de limão, mas tem gosto de tamarindo!",
-      "autoria": "Chaves"
+      "autoria": "Chaves",
+      "data": "2023-10-01T17:05:55.678Z"
     },
     {
       "id": "b807",
+      "favorito": true,
       "conteudo": "Melhor professor, o fracasso é!",
-      "autoria": "Mestre Yoda"
+      "autoria": "Mestre Yoda",
+      "data": "2023-10-02T08:45:12.789Z"
     },
     {
       "id": "9f3c",
+      "favorito": true,
       "conteudo": "Você não é todo mundo!",
-      "autoria": "Mãe"
+      "autoria": "Mãe",
+      "data": "2023-10-03T20:30:23.890Z"
     },
     {
       "id": "6a2b",
+      "favorito": true,
       "conteudo": "Foi sem querer querendo!",
-      "autoria": "Chaves"
+      "autoria": "Chaves",
+      "data": "2023-10-04T13:15:34.901Z"
     },
     {
       "id": "7e2a",
+      "favorito": true,
       "conteudo": "Que a força esteja com você!",
-      "autoria": "Mestre Yoda"
+      "autoria": "Mestre Yoda",
+      "data": "2023-10-05T10:05:45.012Z"
     },
     {
       "id": "5c8f",
+      "favorito": true,
       "conteudo": "Resolver o bug não consegue? Esfriar a cabeça vc deve.",
-      "autoria": "Mestre Yoda"
+      "autoria": "Mestre Yoda",
+      "data": "2023-10-06T18:55:56.123Z"
     },
     {
       "id": "2d6e",
+      "favorito": false,
       "conteudo": "Não faça drama, faça café! :)",
-      "autoria": "Dev"
+      "autoria": "Dev",
+      "data": "2023-10-07T07:45:12.234Z"
     },
     {
       "id": "3f1a",
+      "favorito": false,
       "conteudo": "Conserta minha impressora?",
-      "autoria": "Grupo da família"
+      "autoria": "Grupo da família",
+      "data": "2023-10-08T14:35:23.345Z"
     },
     {
       "id": "8b4c",
+      "favorito": false,
       "conteudo": "A vingança nunca é plena... mata a alma e a envenena...",
-      "autoria": "Fernando Pessoa"
+      "autoria": "Fernando Pessoa",
+      "data": "2023-10-09T11:25:34.456Z"
     },
     {
       "id": "4d2e",
+      "favorito": false,
       "conteudo": "Se eu for aí e achar, eu esfrego na sua cara!",
-      "autoria": "Mãe"
+      "autoria": "Mãe",
+      "data": "2023-10-10T09:15:45.567Z"
     },
     {
       "id": "8aae",
+      "favorito": true,
       "conteudo": "          A morte é uma curva na estrada.",
-      "autoria": "Fernando Pessoa"
+      "autoria": "Fernando Pessoa",
+      "data": "2023-10-11T16:05:56.678Z"
+    },
+    {
+      "id": "c3e4",
+      "conteudo": "Me exclua desse mundo, ó Deusa cruel",
+      "autoria": "Mr Deprê",
+      "data": "2024-09-15"
+    },
+    {
+      "id": "9f08",
+      "conteudo": "aaaaaaaaaa",
+      "autoria": "aaaa",
+      "data": "2024-09-29"
+    },
+    {
+      "id": "f6d9",
+      "conteudo": "a a a a aaaaa",
+      "autoria": "aaaaaaa",
+      "data": "2024-09-29T00:00:00.000Z"
     }
   ]
 }

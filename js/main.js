@@ -1,6 +1,21 @@
 import ui from './ui.js';
 import api from './api.js';
 
+const regexConteudo = /^[A-Za-z\s]{10,}$/
+const regexAutoria = /^[A-Za-z'\-]{5,15}$/
+
+function removerEspacos(texto) {
+    return texto.replaceAll(/\s+/g, ' ').trim();
+}
+
+function validarConteudo(conteudo) {
+    return regexConteudo.test(conteudo)
+}
+
+function validarAutoria(autoria) {
+    return regexAutoria.test(autoria)
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     ui.renderizarPensamentos();
 
@@ -8,6 +23,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const botaoCancelar = document.getElementById("botao-cancelar")
     const campoBusca = document.getElementById("campo-busca")
 
+    const campoData = document.getElementById('pensamento-data')
+    const hoje = new Date().toISOString().split('T')[0];
+    campoData.value = hoje;
+
+    campoData.addEventListener('click', function(event) {
+        // Obtém as dimensões do campo de data
+        const rect = campoData.getBoundingClientRect();
+        const clickX = event.clientX - rect.left; // Posição do clique dentro do input
+
+        // Suponha que o valor da data ocupe os primeiros 70% do campo
+        const limiteAreaVazia = rect.width * 0.18;
+
+        if (clickX > limiteAreaVazia) {
+            // Se o clique ocorreu na área "vazia" (onde está o ícone)
+            console.log('Clique na área vazia, abrindo seletor de data...');
+            campoData.showPicker(); // Abre o seletor de datas
+        } else {
+            console.log('Clique no valor da data.');
+        }
+    });
+    
     formularioPensamento.addEventListener('submit', manipularSubmissaoFormulario);
     botaoCancelar.addEventListener('click', manipularCancelamentoFormulario);
     campoBusca.addEventListener('input', manipularBusca);
@@ -21,9 +57,28 @@ async function manipularSubmissaoFormulario(evento) {
     const id = document.getElementById('pensamento-id').value;
     const conteudo = document.getElementById('pensamento-conteudo').value;
     const autoria = document.getElementById('pensamento-autoria').value;
+    const data = document.getElementById('pensamento-data').value;
+
+    const conteudoSemEspacos = removerEspacos(conteudo);
+    const autoriaSemEspacos = removerEspacos(autoria);
+
+    if(!validarConteudo(conteudoSemEspacos)) {
+        alert('O conteúdo do pensamento deve ter apenas letras e espaços com um mínimo de 10 caracteres.');
+        return; 
+    }
+
+    if(!validarAutoria(autoriaSemEspacos)) {
+        alert('A autoria do pensamento deve ter apenas letras sem espaços, com um mínimo de 3 caracteres e máximo de 15 caracteres.');
+        return;
+    }
+
+    if(!validarData(data)) {
+        alert('Não é permitido inserir pensamentos com data futuras. Selecione outra data.');
+        return;
+    }
 
     try {
-        id ? await api.atualizarPensamento({id, conteudo, autoria}) : await api.salvarPensamento({conteudo, autoria});
+        id ? await api.atualizarPensamento({id, conteudo, autoria, data}) : await api.salvarPensamento({conteudo, autoria, data});
         ui.renderizarPensamentos();
         ui.limparFormulario();
     } catch (error) {
@@ -47,6 +102,13 @@ async function manipularBusca(evento) {
         console.error(error);
         alert('Erro ao buscar pensamento: ' + termoBusca);
     }
-}        
+}
+
+function validarData(data) {
+    const dataAtual = new Date();
+    const dataPensamento = new Date(data);
+    return dataPensamento <= dataAtual;
+
+}
 
 

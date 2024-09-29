@@ -3,13 +3,13 @@ import api from './api.js';
 const ui = {
     async preencherFormulario(pensamentoId) {
         const pensamento = await api.buscarPensamentoPorId(pensamentoId)
-        document.getElementById('pensamento-id').value = pensamento.id;
-        document.getElementById('pensamento-conteudo').value = pensamento.conteudo;
+        document.getElementById('pensamento-id').value = pensamento.id
+        document.getElementById('pensamento-conteudo').value = pensamento.conteudo
         document.getElementById('pensamento-autoria').value = pensamento.autoria
+        document.getElementById('pensamento-data').value = pensamento.data.split('T')[0]
     
-        document.getElementById('pensamento-form').scrollIntoView({
-            behavior: 'smooth'
-        });
+    
+        document.getElementById('form-container').scrollIntoView({behavior: 'smooth'})
     },
 
     limparFormulario() {
@@ -54,10 +54,42 @@ const ui = {
         pensamentoConteudo.classList.add('pensamento-conteudo');
         pensamentoConteudo.textContent = pensamento.conteudo;
 
+        const pensamentoData = document.createElement('div');
+        
+        const options = {
+            timeZone: 'UTC',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            weekday: 'long',
+        }
+
+        const dataFormatada = pensamento.data.toLocaleDateString('pt-BR', options);
+        const dataComRegex  = dataFormatada.replace(/^(\w)/, match => match.toUpperCase());       
+        pensamentoData.classList.add('pensamento-data');
+        pensamentoData.textContent = dataComRegex;
+
         const pensamentoAutoria = document.createElement('div');
         pensamentoAutoria.classList.add('pensamento-autoria');
         pensamentoAutoria.textContent = pensamento.autoria;
         
+        const botaoFavoritar = document.createElement('button');
+        botaoFavoritar.classList.add('botao-favorito');
+        botaoFavoritar.onclick = async () => {
+            try {
+                await api.atualizarFavorito(pensamento.id, !pensamento.favorito)
+                ui.renderizarPensamentos()
+            } catch (error) {
+                console.error(error);
+                alert('Erro ao favoritar pensamento: ' + pensamento.id)
+            }
+        };
+
+        const iconeFavorito = document.createElement('img');
+        iconeFavorito.src = pensamento.favorito ? 'assets/imagens/icone-favorito.png' : 'assets/imagens/icone-favorito_outline.png'
+        iconeFavorito.alt = 'Favoritar Pensamento';
+        botaoFavoritar.append(iconeFavorito);
+
         const botaoEditar = document.createElement('button');
         botaoEditar.classList.add('botao-editar');
         botaoEditar.onclick = () => ui.preencherFormulario(pensamento.id);
@@ -76,8 +108,10 @@ const ui = {
         iconeExcluir.alt = 'Excluir Pensamento';
         botaoExcluir.append(iconeExcluir);
 
+
         const icones = document.createElement('div');
         icones.classList.add('icones');
+        icones.append(botaoFavoritar);
         icones.append(botaoEditar);
         icones.append(botaoExcluir);
 
@@ -85,6 +119,7 @@ const ui = {
         li.append(iconeAspas);
         li.append(pensamentoConteudo);
         li.append(pensamentoAutoria);
+        li.append(pensamentoData);
         li.append(icones);
 
         listaPensamentos.append(li);
